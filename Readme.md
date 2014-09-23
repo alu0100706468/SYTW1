@@ -2,15 +2,15 @@
 <center>![](https://lh3.googleusercontent.com/-uRklc0F6LiE/TYV_WJhhVZI/AAAAAAAAAGQ/HovceRcuUxA/s1600/twitter.png)</center>
 
 
-Sistemas y Tecnologías Web. Ejemplo de OAuth, Twitter, Rest y Rack
+Sistemas y Tecnologías Web. Aplicación Web con Sinatra: 
 ===========
- Accediendo a Twitter y Mostrando los últimos twitts en una página
+ Contar la Popularidad de Nuestros Amigos en Twitter.
 
 
 Objetivo
 -----------
 
-Accedemos a Twitter en una aplicación Rack que muestre en una página los últimos twitts de una lista de usuarios obtenidos desde un formulario.
+Aplicación web en Sinatra que a través del nombre del usuario muestre la lista de los amigos de ese usuario (esto es, a quienes sigue) ordenada según su popularidad (esto es, según el número de seguidores que tiene). Del mas popular al menos popular (no mas de 10 usuarios).
 
 Instalación
 --------------
