@@ -1,59 +1,45 @@
 # -*- coding: utf-8 -*-
 require 'twitter'
-require 'rack'
-#require 'pry-debugger'
-require 'thin'
-require 'erb'
+require 'sinatra'
+require './configure'
 
-class Twitts
-
-  require './configure'
-
-	#Inicializar variables
-	def initialize
-		@todo_tweet = []
-		@name = ''
-		@number = 0		
+	get '/' do
+		@n_amigos = 0 # numero de amigos
+		@name = '' #nombre de usuario twitter
+		@usuarios = Hash.new	#almacenara los amigos y el numero de seguidores
+		erb :twitter
 	end
 
-	#Acceso al HTML para mostrar los resultados
-	def erb(template)
-  		template_file = File.open("twitter.html.erb", 'r')
-  		ERB.new(File.read(template_file)).result(binding)
-	end
-	
-	#Método call
-	def call env
-	    req = Rack::Request.new(env)
-	    client = my_twitter_client() 
-	    binding.pry if ARGV[0]
-	   
-	   #Si no esta vacio , no es un espacio y el usuario existe en Twitter el nombre es el introducido
-	    @name = (req["firstname"] && req["firstname"] != '' && client.user?(req["firstname"]) == true ) ? req["firstname"] : ''
+	post '/' do
+		@n_amigos = 0
+		@usuarios = Hash.new
+		@name = params[:firstname] || '' #recoge del parametro firstname el nombre de usuario
+		client = my_twitter_client() #establece conexion twitter
 
-		@number = (req["n"] && req["n"].to_i>1 ) ? req["n"].to_i : 1
-		#puts "#{req["n"]}"
-		
-		#Si el nombre existe buscamos sus últimos Tweets
-		if @name == req["firstname"]
-			#puts "#{@todo_tweet}"
-			ultimos_t = client.user_timeline(@name,{:count=>@number.to_i})
-			@todo_tweet =(@todo_tweet && @todo_tweet != '') ? ultimos_t.map{ |i| i.text} : ''				
+		#Si el usuario introducido es de Twitter:
+		if client.user? @name
+			usr = client.user(@name) #usr = usuario introducido por pantalla
+			@n_amigos = usr.friends_count #n_amigos = numero de amigos de usr
+			amigos = client.friend_ids(@name).attrs[:ids].take(10) #Almacena en "amigos" los últimos 10 amigos del usuario
+
+			if (@n_amigos < 10)
+				@n_amigos.times do |i|
+						user_n = client.user(amigos[i])
+						@usuarios[user_n.screen_name.to_s] = user_n.followers_count.to_i
+				end
+			end
+
+			if (@n_amigos >= 10)
+				10.times do |i|
+						user_n = client.user(amigos[i])
+						@usuarios[user_n.screen_name.to_s] = user_n.followers_count.to_i
+				end
+			end
+
+			@usuarios = @usuarios.sort_by {|k,v| -v} #ordena los amigos de mayor a menor segun sus seguidores
 		end
 
-		#Invoca a erb
-		Rack::Response.new(erb('twitter.html.erb'))
-	end
+		erb :twitter
+	end	
 
-end
 
-if $0 == __FILE__
-	Rack::Server.start(
-# 		:app => Rack::ShowExceptions.new(
-#        	Rack::Lint.new(
-#           	Rack::Twitts.new)), 
-		:app => Twitts.new,
-	    :Port => 9393,
-	    :server => 'thin'
-  	)
-end
