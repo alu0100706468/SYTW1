@@ -22,7 +22,7 @@ require './configure'
 		if client.user? @name
 
 			usr = client.user(@name) #usr = usuario introducido por pantalla
-			@pic = usr.profile_image_url()
+			@pic = usr.profile_image_url
 			@n_amigos = usr.friends_count #n_amigos = numero de amigos de usr
 			amigos = client.friend_ids(@name).attrs[:ids].take(10) #Almacena en "amigos" los últimos 10 amigos del usuario
 
