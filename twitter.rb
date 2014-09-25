@@ -6,6 +6,7 @@ require './configure'
 	get '/' do
 		@n_amigos = 0 # numero de amigos
 		@name = '' #nombre de usuario twitter
+		@pic = ''
 		@usuarios = Hash.new	#almacenara los amigos y el numero de seguidores
 		erb :twitter
 	end
@@ -16,9 +17,12 @@ require './configure'
 		@name = params[:firstname] || '' #recoge del parametro firstname el nombre de usuario
 		client = my_twitter_client() #establece conexion twitter
 
+
 		#Si el usuario introducido es de Twitter:
 		if client.user? @name
+
 			usr = client.user(@name) #usr = usuario introducido por pantalla
+			@pic = usr.profile_image_url()
 			@n_amigos = usr.friends_count #n_amigos = numero de amigos de usr
 			amigos = client.friend_ids(@name).attrs[:ids].take(10) #Almacena en "amigos" los últimos 10 amigos del usuario
 

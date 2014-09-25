@@ -1,0 +1,69 @@
+<style type="text/css">
+
+			body{
+				font-color: white; 
+			 	font-family: Arial;
+			}
+
+  			p{ 
+				color: white; 
+			 	font-family: Arial;
+			}
+
+			ol{
+				color: white; 
+			 	font-family: Arial;
+			}
+
+  			#cabecera{
+				background-size:  100%;
+				background-color: black;
+			}
+
+			#cabecera h1{
+				color: white;
+				text-align: left;
+				
+				line-height: 3.5em;
+			}
+
+			#re{
+				font-family: Arial;
+				margin-top: 4em;
+				margin-left: 33%;
+				margin-right: 5em;
+				width: 35%;
+				text-align: center;
+				font-size: 2em;
+				float: left;
+			}
+			#izquierda{
+				font-color: white;
+				margin-left: 33%;
+				width: 35%; 
+				text-align: center;
+				font-family:Arial;
+				font-size: 1.5em;
+
+				float: left; 
+				margin-bottom: 4em;
+			}
+
+			#warning{
+				font-size: 1.5em;
+				font-color: white;
+				padding-top: 0em;
+				text-align: center;
+				padding-bottom: 0.9em;
+
+			}
+
+
+			html { 
+				background: url(back.jpg) no-repeat fixed center ; 
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}	
+</style>
