@@ -41,11 +41,7 @@
 			<%else%>
 				<p><b> Usuario @<%= @name %> </b></p>
 				<img src="<%= @pic %>"/>
-
-			<%end %>
-
-			<% if @name != ''%>
-					<p>
+				<p>
 						Sus últimos 10 amigos ordenados por popularidad son:
 						<ol>
 							<% @usuarios.each { |user, count| %>
